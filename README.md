@@ -13,7 +13,7 @@
 *   🎨 **Desain UI/UX Modern:** Antarmuka yang ramah pengguna dan memanjakan mata.
 *   📊 **Dashboard Interaktif:** Ringkasan aktivitas dan data pengguna yang terstruktur.
 *   ⚡ **Navigasi Mulus:** Transisi antar menu yang cepat dan responsif.
-*   *(Tambahkan fitur spesifik aplikasi Anda di sini, misalnya: Manajemen Member, Jadwal Latihan, dll)*
+
 
 ## 🛠️ Teknologi yang Digunakan
 *   **Bahasa Pemrograman:** Java
