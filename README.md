@@ -9,6 +9,14 @@
 ## 📖 Tentang Project
 **FitLifePro** adalah project akhir berupa aplikasi desktop yang dirancang khusus untuk memanajemen aktivitas kebugaran. Fokus utama dari repositori ini adalah pada implementasi **UI/UX yang modern, bersih, dan interaktif** menggunakan Java GUI (Swing/JavaFX). 
 
+Mata kuliah: Pemrograman Berorientasi Objek
+Dosen Pengampu: Herika Hayurani
+Kelompok STAR ONE
+Muhammad Usman Effendi, 1402022046
+Husein Fauzi, 1402025066
+Ibnu Dzaitullah Muztaba, 1402022025
+
+
 ## ✨ Fitur Utama
 *   🎨 **Desain UI/UX Modern:** Antarmuka yang ramah pengguna dan memanjakan mata.
 *   📊 **Dashboard Interaktif:** Ringkasan aktivitas dan data pengguna yang terstruktur.
