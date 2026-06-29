@@ -13,6 +13,7 @@
 *   🎨 **Desain UI/UX Modern:** Antarmuka yang ramah pengguna dan memanjakan mata.
 *   📊 **Dashboard Interaktif:** Ringkasan aktivitas dan data pengguna yang terstruktur.
 *   ⚡ **Navigasi Mulus:** Transisi antar menu yang cepat dan responsif.
+*   ![Application Preview](https://github.com/effend1/Star-one/blob/bb5dabfe33d19205999966dd8e44df0f95b0dfcd/fitlife.png)
 
 
 ## 🛠️ Teknologi yang Digunakan
