@@ -19,13 +19,6 @@ public class FormRegistrasi extends javax.swing.JFrame {
         setResizable(false); 
         setLocationRelativeTo(null);
         
-        // --- TAMBAHKAN KODE SAKTI INI ---
-        BtnSubmitReg.addActionListener((java.awt.event.ActionEvent evt) -> {
-            // Pindah ke form login
-            FormLogin login = new FormLogin();
-            login.setVisible(true);
-            dispose(); // Tutup form registrasi
-        });
     }
 
     /**
@@ -42,7 +35,7 @@ public class FormRegistrasi extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         TxtRegNama = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
+        TxtNamaLengkap = new javax.swing.JLabel();
         TxtRegPassword = new javax.swing.JPasswordField();
         jLabel5 = new javax.swing.JLabel();
         TxtRegTglLahir = new javax.swing.JTextField();
@@ -53,6 +46,7 @@ public class FormRegistrasi extends javax.swing.JFrame {
         TxtRegBerat = new javax.swing.JTextField();
         TxtRegTinggi = new javax.swing.JTextField();
         BtnSubmitReg = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
         lblBackrgoundReg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -76,8 +70,8 @@ public class FormRegistrasi extends javax.swing.JFrame {
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
         jPanel1.add(TxtRegNama, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 50, 130, -1));
 
-        jLabel3.setText("Nama Lengkap");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, -1, -1));
+        TxtNamaLengkap.setText("Nama Lengkap");
+        jPanel1.add(TxtNamaLengkap, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, -1, -1));
 
         TxtRegPassword.addActionListener(this::TxtRegPasswordActionPerformed);
         jPanel1.add(TxtRegPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 100, 130, -1));
@@ -105,7 +99,11 @@ public class FormRegistrasi extends javax.swing.JFrame {
         jPanel1.add(TxtRegTinggi, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 290, 130, -1));
 
         BtnSubmitReg.setText("Daftar Sekarang");
+        BtnSubmitReg.addActionListener(this::BtnSubmitRegActionPerformed);
         jPanel1.add(BtnSubmitReg, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 340, -1, -1));
+
+        jLabel9.setText("(dd/mm/yyyy)");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 150, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 200, 360, 390));
 
@@ -134,6 +132,94 @@ public class FormRegistrasi extends javax.swing.JFrame {
     private void TxtRegBeratActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtRegBeratActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TxtRegBeratActionPerformed
+
+    private void BtnSubmitRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSubmitRegActionPerformed
+        // 1. Mengambil nilai dari semua textfield
+    String nama = TxtRegNama.getText().trim();
+    String password = new String(TxtRegPassword.getPassword()).trim(); 
+    String tanggalLahir = TxtRegTglLahir.getText().trim();
+    String email = TxtRegEmail.getText().trim();
+    String beratStr = TxtRegBerat.getText().trim();
+    String tinggiStr = TxtRegTinggi.getText().trim();
+
+    // 2. Validasi Form Kosong
+    if (nama.isEmpty() || password.isEmpty() || tanggalLahir.isEmpty() || 
+        email.isEmpty() || beratStr.isEmpty() || tinggiStr.isEmpty()) {
+        
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Semua kolom harus diisi! Tidak boleh ada yang kosong.", 
+            "Peringatan", 
+            javax.swing.JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // 3. Validasi Format Tanggal Lahir (dd/MM/yyyy)
+    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+    sdf.setLenient(false); 
+    try {
+        java.util.Date tgl = sdf.parse(tanggalLahir);
+    } catch (java.text.ParseException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Format Tanggal Lahir salah!\nHarap gunakan format: Hari/Bulan/Tahun (Contoh: 17/08/2004)", 
+            "Error Input", 
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        return; 
+    }
+
+    // 4. Validasi Angka untuk Berat dan Tinggi
+    double berat = 0;
+    double tinggi = 0;
+    try {
+        berat = Double.parseDouble(beratStr);
+        tinggi = Double.parseDouble(tinggiStr);
+        
+        if (berat <= 0 || tinggi <= 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Berat dan Tinggi harus lebih dari 0!", 
+                "Error Input", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    } catch (NumberFormatException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Kolom Berat dan Tinggi harus diisi dengan angka!", 
+            "Error Input", 
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // 5. JIKA SEMUA VALIDASI LOLOS -> SIMPAN KE DATABASE
+    try {
+        // Panggil class koneksi (Pastikan kamu sudah buat class DatabaseConnection di package 'koneksi')
+        java.sql.Connection conn = DatabaseConnection.getKoneksi();
+        
+        String sql = "INSERT INTO members (nama, password, tanggal_lahir, email, berat, tinggi) VALUES (?, ?, ?, ?, ?, ?)";
+        java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
+        
+        pstmt.setString(1, nama);
+        pstmt.setString(2, password);
+        pstmt.setString(3, tanggalLahir);
+        pstmt.setString(4, email);
+        pstmt.setDouble(5, berat);
+        pstmt.setDouble(6, tinggi);
+        
+        // Eksekusi query
+        pstmt.executeUpdate();
+        
+        javax.swing.JOptionPane.showMessageDialog(this, "Pendaftaran Berhasil! Silakan Login.");
+        
+        // Pindah ke form login
+        FormLogin login = new FormLogin();
+        login.setVisible(true);
+        this.dispose();
+        
+    } catch (java.sql.SQLException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Error menyimpan ke database: " + e.getMessage(), 
+            "Error Database", 
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_BtnSubmitRegActionPerformed
     
     //private void BtnSubmitRegActionPerformed(java.awt.event.ActionEvent evt) {                                             
         //FormLogin login = new FormLogin();
@@ -167,6 +253,7 @@ public class FormRegistrasi extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnSubmitReg;
+    private javax.swing.JLabel TxtNamaLengkap;
     private javax.swing.JTextField TxtRegBerat;
     private javax.swing.JTextField TxtRegEmail;
     private javax.swing.JTextField TxtRegNama;
@@ -175,12 +262,12 @@ public class FormRegistrasi extends javax.swing.JFrame {
     private javax.swing.JTextField TxtRegTinggi;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblBackrgoundReg;
     // End of variables declaration//GEN-END:variables

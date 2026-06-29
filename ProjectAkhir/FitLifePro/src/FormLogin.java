@@ -7,8 +7,11 @@
  *
  * @author UsmanEffendi
  */
+import java.sql.ResultSet;
+ 
 public class FormLogin extends javax.swing.JFrame {
-    
+    public static int idUserYangLogin = 0;
+    public static String namaPenggunaYangLogin = "";
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FormLogin.class.getName());
 
     /**
@@ -34,9 +37,9 @@ public class FormLogin extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        lblEmail = new javax.swing.JLabel();
         TxtLoginEmail = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
+        lblPassword = new javax.swing.JLabel();
         TxtLoginPassword = new javax.swing.JPasswordField();
         jCheckBox1 = new javax.swing.JCheckBox();
         jLabel8 = new javax.swing.JLabel();
@@ -49,13 +52,13 @@ public class FormLogin extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Black", 0, 48)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("<");
+        jLabel2.setText("<-");
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel2MouseClicked(evt);
             }
         });
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 40, 40, 70));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 40, 60, 70));
 
         jLabel3.setFont(new java.awt.Font("Kristen ITC", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 102));
@@ -73,14 +76,14 @@ public class FormLogin extends javax.swing.JFrame {
         jLabel5.setText("Please enter your email and password");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, -1));
 
-        jLabel6.setText("Email");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
+        lblEmail.setText("Email");
+        jPanel1.add(lblEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
 
         TxtLoginEmail.addActionListener(this::TxtLoginEmailActionPerformed);
         jPanel1.add(TxtLoginEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 290, 40));
 
-        jLabel7.setText("Password");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, -1, -1));
+        lblPassword.setText("Password");
+        jPanel1.add(lblPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, -1, -1));
 
         TxtLoginPassword.addActionListener(this::TxtLoginPasswordActionPerformed);
         jPanel1.add(TxtLoginPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 290, 40));
@@ -120,27 +123,72 @@ public class FormLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        models.Pengguna userYangLogin = new models.MemberVIP("Usman Effendi", TxtLoginEmail.getText(), "VIP-001", 65.5, 170.0);
- 
-        // Mengecek apakah user tersebut benar-benar dari class MemberVIP
-        if (userYangLogin instanceof models.MemberVIP) {
-            
-            // Proses Casting: mengubah paksa dari Pengguna menjadi MemberVIP
-            models.MemberVIP memberResmi = (models.MemberVIP) userYangLogin;
-            
-            // Memanggil method untuk cetak di console
-            memberResmi.sapaMember(); 
-            memberResmi.tampilkanInfo();
-           
-            // Buka halaman Dashboard jika pengecekan berhasil
-            FormDashboard dashboard = new FormDashboard();
-            dashboard.setVisible(true);
-            this.dispose(); // Tutup FormLogin
+        // 1. Ambil data dari inputan
+    String email = TxtLoginEmail.getText().trim();
+    String password = new String(TxtLoginPassword.getPassword()).trim();
+
+    // 2. Validasi Form Kosong
+    if (email.isEmpty() || password.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Email dan Password tidak boleh kosong!", 
+            "Peringatan", 
+            javax.swing.JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // 3. Pengecekan Email dan Password ke Database
+    try {
+        java.sql.Connection conn = DatabaseConnection.getKoneksi();
+        String sql = "SELECT * FROM members WHERE email = ? AND password = ?";
+        java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
+        
+        pstmt.setString(1, email);
+        pstmt.setString(2, password);
+        
+        // Jalankan pencarian
+        java.sql.ResultSet rs = pstmt.executeQuery();
+        
+        // Pengecekan apakah data ditemukan
+        if (rs.next()) {
+            // Data ditemukan, baru sekarang kita bisa ambil isinya
+            String namaUser = rs.getString("nama");
+            double beratUser = rs.getDouble("berat");
+            double tinggiUser = rs.getDouble("tinggi");
+
+            // Simpan nama untuk dipakai di Form lain
+            FormLogin.idUserYangLogin = rs.getInt("id_member");
+            //namaPenggunaYangLogin = namaUser;
+            FormLogin.namaPenggunaYangLogin = namaUser;
+            // Penerapan OOP
+            models.Pengguna userYangLogin = new models.MemberVIP(namaUser, email, "VIP-001", beratUser, tinggiUser);
+
+            if (userYangLogin instanceof models.MemberVIP) {
+                models.MemberVIP memberResmi = (models.MemberVIP) userYangLogin;
+                
+                memberResmi.sapaMember(); 
+                memberResmi.tampilkanInfo();
+                
+                javax.swing.JOptionPane.showMessageDialog(this, "Login Berhasil, " + namaUser + "!");
+                
+                FormDashboard dashboard = new FormDashboard();
+                dashboard.setVisible(true);
+                this.dispose(); 
+            }
             
         } else {
-            // Jika bukan MemberVIP, munculkan pop-up error
-            javax.swing.JOptionPane.showMessageDialog(this, "Akses Ditolak! Anda bukan Member VIP.");
+            // Jika tidak ditemukan
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Email atau Password salah!", 
+                "Akses Ditolak", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
         }
+        
+    } catch (java.sql.SQLException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Error Database: " + e.getMessage(), 
+            "Error", 
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -178,9 +226,9 @@ public class FormLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblEmail;
+    private javax.swing.JLabel lblPassword;
     // End of variables declaration//GEN-END:variables
 }

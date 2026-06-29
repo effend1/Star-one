@@ -20,20 +20,55 @@ public class FormDetailWorkout extends javax.swing.JFrame {
 
     // Method untuk menerima data jenis latihan dari halaman sebelumnya
     public void setJenisLatihan(String jenisOtot) {
-        lblJudulLatihan.setText("Latihan Fokus: " + jenisOtot);
-        
-        // Logika penentuan gerakan
-        switch (jenisOtot) {
-            case "Dada" -> lblDetailGerakan.setText("<html>Gerakan:<br>1. Push Up (4 set x 12 repetisi)<br>2. Incline Push Up (3 set x 10 repetisi)<br>3. Chest Press menggunakan Dumbbell</html>");
-            case "Punggung" -> lblDetailGerakan.setText("<html>Gerakan:<br>1. Pull Up (3 set x 8 repetisi)<br>2. Superman Hold (3 set x 30 detik)</html>");
-            case "Kaki" -> lblDetailGerakan.setText("<html>Gerakan:<br>1. Squat (4 set x 15 repetisi)<br>2. Lunges (3 set x 12 repetisi tiap kaki)</html>");
-            case "Bahu" -> lblDetailGerakan.setText("<html>Gerakan:<br>1. Overhead Press (4 set x 12 repetisi)<br>2. Lateral Raises (3 set x 15 repetisi)</html>");
-            case "Lengan" -> lblDetailGerakan.setText("<html>Gerakan:<br>1. Bicep Curls (4 set x 12 repetisi)<br>2. Tricep Extensions (3 set x 12 repetisi)<br>3. Forearm Wrist Curls (3 set x 15 repetisi)</html>");
-            case "Perut" -> lblDetailGerakan.setText("<html>Gerakan:<br>1. Crunch (4 set x 20 repetisi)<br>2. Plank (3 set x 60 detik)</html>");
-            default -> {
-            }
+    lblJudulLatihan.setText("Latihan Fokus: " + jenisOtot);
+    
+    // Siapkan variabel untuk menyimpan lokasi gambar
+    String pathGambar = "";
+
+    switch (jenisOtot) {
+        case "Dada" -> {
+            lblDetailGerakan.setText("<html>Gerakan:<br>1. Push Up (4 set x 12 repetisi)<br>2. Incline Push Up (3 set x 10 repetisi)<br>3. Chest Press menggunakan Dumbbell</html>");
+            pathGambar = "/resource/dada.png";
+        }
+        case "Punggung" -> {
+            lblDetailGerakan.setText("<html>Gerakan:<br>1. Pull Up (3 set x 8 repetisi)<br>2. Lat PullDown (3 set x 10 repitisi)<br>3. Dumble Row (3 set x 12 repitisi)</html>");
+            pathGambar = "/resource/punggung.png"; // Pastikan file ini ada
+        }
+        case "Kaki" -> {
+            lblDetailGerakan.setText("<html>Gerakan:<br>1. Squat (4 set x 15 repetisi)<br>2. Lunges (3 set x 12 repetisi tiap kaki)</html>");
+            pathGambar = "/resource/kaki.png";
+        }
+        case "Bahu" -> {
+            lblDetailGerakan.setText("<html>Gerakan:<br>1. Overhead Press (4 set x 12 repetisi)<br>2. Lateral Raises (3 set x 15 repetisi)</html>");
+            pathGambar = "/resource/bahu.png";
+        }
+        case "Lengan" -> {
+            lblDetailGerakan.setText("<html>Gerakan:<br>1. Bicep Curls (4 set x 12 repetisi)<br>2. Tricep Extensions (3 set x 12 repetisi)<br>3. Forearm Wrist Curls (3 set x 15 repetisi)</html>");
+            pathGambar = "/resource/bisep&trisep.png"; // Sesuai dengan nama file di resource kamu
+        }
+        case "Perut" -> {
+            lblDetailGerakan.setText("<html>Gerakan:<br>1. Crunch (4 set x 20 repetisi)<br>2. Plank (3 set x 60 detik)</html>");
+            pathGambar = "/resource/perut.png"; // Pastikan file ini ada
+        }
+        default -> {
+            lblDetailGerakan.setText("");
         }
     }
+
+    // Logika untuk me-load dan menampilkan gambar ke lblGambar
+    try {
+        java.net.URL imgURL = getClass().getResource(pathGambar);
+        if (imgURL != null) {
+            lblGambar.setIcon(new javax.swing.ImageIcon(imgURL));
+            lblGambar.setText(""); // Pastikan text kosong jika gambar berhasil diload
+        } else {
+            lblGambar.setIcon(null);
+            lblGambar.setText("Gambar tidak ditemukan");
+        }
+    } catch (Exception e) {
+        System.out.println("Gagal memuat gambar: " + e.getMessage());
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -45,36 +80,44 @@ public class FormDetailWorkout extends javax.swing.JFrame {
 
         lblJudulLatihan = new javax.swing.JLabel();
         lblDetailGerakan = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        lblGambar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lblJudulLatihan.setText("judul latihan");
+        lblJudulLatihan.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
+        lblJudulLatihan.setForeground(new java.awt.Color(204, 204, 204));
+        lblJudulLatihan.setText(" LATIHAN");
+        getContentPane().add(lblJudulLatihan, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 70, -1, -1));
 
-        lblDetailGerakan.setText("detail gerakan");
+        lblDetailGerakan.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        lblDetailGerakan.setForeground(new java.awt.Color(204, 204, 204));
+        lblDetailGerakan.setText("VARIASI");
+        getContentPane().add(lblDetailGerakan, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 160, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(149, 149, 149)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblDetailGerakan)
-                    .addComponent(lblJudulLatihan))
-                .addContainerGap(177, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(lblJudulLatihan)
-                .addGap(96, 96, 96)
-                .addComponent(lblDetailGerakan)
-                .addContainerGap(150, Short.MAX_VALUE))
-        );
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel1.setText("<-");
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, -1, -1));
+
+        lblGambar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/dada.png"))); // NOI18N
+        lblGambar.setText("jLabel1");
+        getContentPane().add(lblGambar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1130, 430));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        MenuWorkout menu = new MenuWorkout();
+        menu.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -102,7 +145,9 @@ public class FormDetailWorkout extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblDetailGerakan;
+    private javax.swing.JLabel lblGambar;
     private javax.swing.JLabel lblJudulLatihan;
     // End of variables declaration//GEN-END:variables
 }

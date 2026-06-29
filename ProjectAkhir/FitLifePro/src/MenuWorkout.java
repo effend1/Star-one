@@ -36,6 +36,7 @@ public class MenuWorkout extends javax.swing.JFrame {
         Lengan = new javax.swing.JButton();
         Punggung = new javax.swing.JButton();
         Perut = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -90,6 +91,16 @@ public class MenuWorkout extends javax.swing.JFrame {
         Perut.addActionListener(this::PerutActionPerformed);
         getContentPane().add(Perut, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 490, 1110, 100));
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 51));
+        jLabel3.setText("<-");
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 40, 30));
+
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/vidio dashboard.gif"))); // NOI18N
         jLabel2.setText("jLabel2");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -30, 1650, 780));
@@ -139,6 +150,12 @@ public class MenuWorkout extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_PerutActionPerformed
 
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        FormDashboard dashboard = new FormDashboard();
+        dashboard.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel3MouseClicked
+    
     /**
      * @param args the command line arguments
      */
@@ -173,5 +190,6 @@ public class MenuWorkout extends javax.swing.JFrame {
     private javax.swing.JButton Punggung;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 }

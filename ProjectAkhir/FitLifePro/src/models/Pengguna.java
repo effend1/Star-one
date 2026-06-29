@@ -4,7 +4,7 @@
  */
 package models;
 /**
- *
+ * data Pengguna
  * @author UsmanEffendi
  */
 

@@ -5,8 +5,9 @@
 package models;
 
 /**
- *
+ * data Member VIP.
  * @author UsmanEffendi
+ * @version 1.0
  */
 
 //Class yang mengimplementasikan interface dan Inheritance (selain JFrame)

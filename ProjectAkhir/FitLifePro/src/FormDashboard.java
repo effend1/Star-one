@@ -16,6 +16,7 @@ public class FormDashboard extends javax.swing.JFrame {
      */
     public FormDashboard() {
         initComponents();
+        lblNamaUser.setText("Halo, " + FormLogin.namaPenggunaYangLogin);
     }
 
     /**
@@ -28,7 +29,7 @@ public class FormDashboard extends javax.swing.JFrame {
     private void initComponents() {
 
         btnLogout = new javax.swing.JButton();
-        lblProfiles = new javax.swing.JLabel();
+        lblNamaUser = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -56,12 +57,13 @@ public class FormDashboard extends javax.swing.JFrame {
 
         btnLogout.setText("LOG OUT");
         btnLogout.setBorderPainted(false);
+        btnLogout.addActionListener(this::btnLogoutActionPerformed);
         getContentPane().add(btnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 660, 100, 40));
 
-        lblProfiles.setFont(new java.awt.Font("Segoe UI", 3, 30)); // NOI18N
-        lblProfiles.setForeground(new java.awt.Color(255, 255, 255));
-        lblProfiles.setText("Profiles");
-        getContentPane().add(lblProfiles, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, 140, 70));
+        lblNamaUser.setFont(new java.awt.Font("Segoe UI", 3, 30)); // NOI18N
+        lblNamaUser.setForeground(new java.awt.Color(255, 255, 255));
+        lblNamaUser.setText("Profiles");
+        getContentPane().add(lblNamaUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, 400, 70));
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -94,12 +96,15 @@ public class FormDashboard extends javax.swing.JFrame {
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 150, 350, 50));
 
         btnBookZumba.setText("BOOK");
+        btnBookZumba.addActionListener(this::btnBookZumbaActionPerformed);
         jPanel1.add(btnBookZumba, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 170, -1, -1));
 
         btnBookSpinning.setText("BOOK");
+        btnBookSpinning.addActionListener(this::btnBookSpinningActionPerformed);
         jPanel1.add(btnBookSpinning, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 250, -1, -1));
 
         btnBookYoga.setText("BOOK");
+        btnBookYoga.addActionListener(this::btnBookYogaActionPerformed);
         jPanel1.add(btnBookYoga, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 80, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 840, 330));
@@ -155,6 +160,54 @@ public class FormDashboard extends javax.swing.JFrame {
         pilih.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        TampilanAwal awal = new TampilanAwal();
+        awal.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void btnBookYogaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookYogaActionPerformed
+        String namaMember = FormLogin.namaPenggunaYangLogin; 
+    
+        // Data spesifik untuk tombol ini (Yoga)
+        String kelas = "Yoga Class";
+        String pelatih = "Coach Sarah";
+        String jam = "16:00";
+
+        // Memanggil FormPembayaran dan melemparkan data-data di atas
+        FormPembayaran formBayar = new FormPembayaran(namaMember, kelas, jam, pelatih);
+        formBayar.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnBookYogaActionPerformed
+
+    private void btnBookZumbaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookZumbaActionPerformed
+        String namaMember = FormLogin.namaPenggunaYangLogin; 
+    
+        // Data spesifik untuk tombol ini (Yoga)
+        String kelas = "Zumba Class";
+        String pelatih = "Coach Alex";
+        String jam = "18:30";
+
+        // Memanggil FormPembayaran dan melemparkan data-data di atas
+        FormPembayaran formBayar = new FormPembayaran(namaMember, kelas, jam, pelatih);
+        formBayar.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnBookZumbaActionPerformed
+
+    private void btnBookSpinningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookSpinningActionPerformed
+        String namaMember = FormLogin.namaPenggunaYangLogin; 
+    
+        // Data spesifik untuk tombol ini (Yoga)
+        String kelas = "Spinning Class";
+        String pelatih = "Coach Budi";
+        String jam = "20:00";
+
+        // Memanggil FormPembayaran dan melemparkan data-data di atas
+        FormPembayaran formBayar = new FormPembayaran(namaMember, kelas, jam, pelatih);
+        formBayar.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnBookSpinningActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -203,6 +256,6 @@ public class FormDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JLabel lblProfiles;
+    private javax.swing.JLabel lblNamaUser;
     // End of variables declaration//GEN-END:variables
 }
