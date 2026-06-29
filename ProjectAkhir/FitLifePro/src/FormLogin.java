@@ -160,7 +160,7 @@ public class FormLogin extends javax.swing.JFrame {
             //namaPenggunaYangLogin = namaUser;
             FormLogin.namaPenggunaYangLogin = namaUser;
             // Penerapan OOP
-            models.Pengguna userYangLogin = new models.MemberVIP(namaUser, email, "VIP-001", beratUser, tinggiUser);
+            models.Pengguna userYangLogin = new models.MemberVIP(namaUser, email, beratUser, tinggiUser, "VIP-001");
 
             if (userYangLogin instanceof models.MemberVIP) {
                 models.MemberVIP memberResmi = (models.MemberVIP) userYangLogin;

@@ -3,11 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/ProjectAkhirPBO/ProjectAkhir/FitLifePro/src/TampilanAwal.java</file>
+            <file>file:/D:/ProjectAkhirPBO/ProjectAkhir/FitLifePro/src/FormDashboard.java</file>
             <file>file:/D:/ProjectAkhirPBO/ProjectAkhir/FitLifePro/src/FormLogin.java</file>
-            <file>file:/D:/ProjectAkhirPBO/ProjectAkhir/FitLifePro/src/models/AktivitasMember.java</file>
+            <file>file:/D:/ProjectAkhirPBO/ProjectAkhir/FitLifePro/src/FormPembayaran.java</file>
+            <file>file:/D:/ProjectAkhirPBO/ProjectAkhir/FitLifePro/src/FormRegistrasi.java</file>
+            <file>file:/D:/ProjectAkhirPBO/ProjectAkhir/FitLifePro/src/FormDetailWorkout.java</file>
             <file>file:/D:/ProjectAkhirPBO/ProjectAkhir/FitLifePro/src/models/Pengguna.java</file>
+            <file>file:/D:/ProjectAkhirPBO/ProjectAkhir/FitLifePro/src/models/AktivitasMember.java</file>
             <file>file:/D:/ProjectAkhirPBO/ProjectAkhir/FitLifePro/src/models/MemberVIP.java</file>
+            <file>file:/D:/ProjectAkhirPBO/ProjectAkhir/FitLifePro/src/DatabaseConnection.java</file>
         </group>
     </open-files>
 </project-private>

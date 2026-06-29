@@ -12,6 +12,20 @@
             </test-roots>
         </data>
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>berdasarkan</word>
+            <word>dari</word>
+            <word>dasar</word>
+            <word>fisik</word>
+            <word>fitlifepro</word>
+            <word>fitlifeprodb</word>
+            <word>kedatabase</word>
+            <word>koneksi</word>
+            <word>Melakukan</word>
+            <word>Membangun</word>
+            <word>Memuat</word>
+            <word>menampilkannya</word>
+            <word>Merepresentasikan</word>
+            <word>objek</word>
             <word>Pengguna</word>
         </spellchecker-wordlist>
     </configuration>

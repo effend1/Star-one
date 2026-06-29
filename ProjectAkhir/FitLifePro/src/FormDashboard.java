@@ -1,22 +1,86 @@
+
+import models.Pengguna;
+import models.MemberVIP;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
 /**
- *
- * @author musta
+ * Memuat data fisik Pengguna dari database, menampilkannya di Dashboard.
+ * Melakukan query berdasarkan Nama yang login.
+ * @author usmaneffendi
  */
 public class FormDashboard extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FormDashboard.class.getName());
+    
+    
 
     /**
      * Creates new form FormDashboard
      */
     public FormDashboard() {
         initComponents();
-        lblNamaUser.setText("Halo, " + FormLogin.namaPenggunaYangLogin);
+        String nama = FormLogin.namaPenggunaYangLogin;
+        if (nama != null && !nama.isEmpty()) {
+        lblNamaUser.setText("Halo, " + nama);
+        loadDataUser(nama); // Panggil method terpisah
+        } else {
+        lblNamaUser.setText("Halo, Guest");
+        txtAreaRekomendasi.setText("Silakan login untuk melihat rekomendasi.");
+        }
+    }
+    private void loadDataUser(String nama) {
+        try {
+            java.sql.Connection conn = DatabaseConnection.getKoneksi(); 
+            String sql = "SELECT * FROM members WHERE nama = ?"; 
+            
+            java.sql.PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, FormLogin.namaPenggunaYangLogin);
+            java.sql.ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                String idMember = rs.getString("id_member");
+                String status = rs.getString("status");
+                String email = rs.getString("email");
+                double berat = rs.getDouble("berat");
+                double tinggi = rs.getDouble("tinggi");
+                
+                Pengguna userAktif;
+
+                // Cek apakah ID mengandung 'VIP'
+                if (status != null && status.equalsIgnoreCase("VIP")) {
+                    // Jika VIP, gunakan MemberVIP (Poin 6: Overriding)
+                    userAktif = new MemberVIP(nama, email, berat, tinggi, idMember);
+                } else {
+                    // Jika member biasa
+                    userAktif = new Pengguna(nama, email, berat, tinggi);
+                }
+
+                // Tampilkan hasil (Poin 8: Instanceof & Casting)
+                if (userAktif instanceof MemberVIP) {
+                    MemberVIP vip = (MemberVIP) userAktif; // Casting ke subclass
+                    txtAreaRekomendasi.setText(vip.getRekomendasiWorkout() + "\nID: " + vip.getMemberId());
+                } else {
+                    txtAreaRekomendasi.setText(userAktif.getRekomendasiWorkout());
+                }if (userAktif instanceof MemberVIP) {
+                    jLabel13.setText("Membership: VIP Active");
+                    jLabel13.setForeground(java.awt.Color.YELLOW);
+                } else {
+                    jLabel13.setText("Membership: Regular");
+                    jLabel13.setForeground(java.awt.Color.WHITE);
+                }
+                // --- SELESAI BAGIAN YANG DIGANTI ---
+
+            } else {
+                txtAreaRekomendasi.setText("Data fisik belum diisi / tidak ditemukan.");
+            }
+        } catch (Exception e) {
+            System.err.println("Database Error: " + e.getMessage());
+            txtAreaRekomendasi.setText("Gagal mengambil data dari database.");
+        }
     }
 
     /**
@@ -49,6 +113,8 @@ public class FormDashboard extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtAreaRekomendasi = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
@@ -58,7 +124,7 @@ public class FormDashboard extends javax.swing.JFrame {
         btnLogout.setText("LOG OUT");
         btnLogout.setBorderPainted(false);
         btnLogout.addActionListener(this::btnLogoutActionPerformed);
-        getContentPane().add(btnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 660, 100, 40));
+        getContentPane().add(btnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 630, 100, 40));
 
         lblNamaUser.setFont(new java.awt.Font("Segoe UI", 3, 30)); // NOI18N
         lblNamaUser.setForeground(new java.awt.Color(255, 255, 255));
@@ -93,7 +159,7 @@ public class FormDashboard extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setText("Zumba                             Coach Alex");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 150, 350, 50));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 150, 350, 50));
 
         btnBookZumba.setText("BOOK");
         btnBookZumba.addActionListener(this::btnBookZumbaActionPerformed);
@@ -107,7 +173,7 @@ public class FormDashboard extends javax.swing.JFrame {
         btnBookYoga.addActionListener(this::btnBookYogaActionPerformed);
         jPanel1.add(btnBookYoga, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 80, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 840, 330));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, 840, 330));
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -142,11 +208,19 @@ public class FormDashboard extends javax.swing.JFrame {
         jLabel15.setText("jLabel15");
         getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 40, 390));
 
+        txtAreaRekomendasi.setEditable(false);
+        txtAreaRekomendasi.setColumns(20);
+        txtAreaRekomendasi.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        txtAreaRekomendasi.setRows(5);
+        jScrollPane1.setViewportView(txtAreaRekomendasi);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 550, 460, 80));
+
         jButton1.setFont(new java.awt.Font("Kristen ITC", 3, 36)); // NOI18N
         jButton1.setText("AYO MULAI WORKOUT");
         jButton1.setBorderPainted(false);
         jButton1.addActionListener(this::jButton1ActionPerformed);
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 210, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 480, 530, -1));
 
         jLabel1.setFont(new java.awt.Font("Kristen ITC", 1, 36)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/vidio dashboard.gif"))); // NOI18N
@@ -256,6 +330,8 @@ public class FormDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblNamaUser;
+    private javax.swing.JTextArea txtAreaRekomendasi;
     // End of variables declaration//GEN-END:variables
 }

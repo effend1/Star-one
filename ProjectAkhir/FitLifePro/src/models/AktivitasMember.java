@@ -12,6 +12,6 @@ package models;
 public interface AktivitasMember {
     void tampilkanInfo();// Method abstrak
     default void sapaMember() { // Method default
-        System.out.println("Selamat datang di FitLifePro!");
+        System.out.println("welcome back!");
     }
 }

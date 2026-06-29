@@ -4,9 +4,13 @@
  */
 
 /**
- *
+ * Class untukmenanganikoneksikeMySQL database.
  * @author UsmanEffendi
  */
+/**
+* Membangun koneksi kedatabase fitlifeprodb.
+* @return objek Connection kedatabase.
+*/
 
 import java.sql.Connection;
 import java.sql.DriverManager;

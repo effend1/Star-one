@@ -4,10 +4,17 @@
  */
 package models;
 /**
- * data Pengguna
+ * Class Merepresentasikan data Pengguna gym FitLifePro
+ * MengimplementasikankonsepenkapsulasidanOOP dasar.
  * @author UsmanEffendi
  */
-
+/**
+     * Constructor untukmembuatobjekPenggunabaru.
+     * @param namaLengkap Nama lengkap user dari database.
+     * @param email Email user untuk login.
+     * @param beratBadan Berat badan user dalam KG.
+     * @param tinggiBadan Tinggi badan user dalam CM.
+     */
 //Menerapkan class, object, method
 public class Pengguna {
     //Enkapsulasi (private modifier)

@@ -15,7 +15,7 @@ public class MemberVIP extends Pengguna implements AktivitasMember {
     private final String memberId;
     
 
-    public MemberVIP(String namaLengkap, String email, String memberId, double beratBadan, double tinggiBadan) {
+    public MemberVIP(String namaLengkap, String email, double beratBadan, double tinggiBadan, String memberId) {
         //Pemanggilan constructor superclass menggunakan super
         super(namaLengkap, email, beratBadan, tinggiBadan);
         this.memberId = memberId;
