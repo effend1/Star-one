@@ -97,29 +97,66 @@ public class FormPembayaran extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbMetodeBayarActionPerformed
 
     private void btnKonfirmasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKonfirmasiActionPerformed
-    
-
-    // Simpan ke database
-    try {
-    java.sql.Connection conn = DatabaseConnection.getKoneksi();
-    String sql = "INSERT INTO pembayaran (id_member, pilihan_kelas, metode_pembayaran) VALUES (?, ?, ?)";
-    java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
-    
-    // Ambil data dari JLabel
-    String kelas = lblDetailKelas.getText(); 
-    // Jika metode pembayaran masih pakai ComboBox
-    String metode = cmbMetodeBayar.getSelectedItem().toString(); 
-    
-    pstmt.setInt(1, FormLogin.idUserYangLogin); 
-    pstmt.setString(2, kelas);
-    pstmt.setString(3, metode);
-    
-    pstmt.executeUpdate();
-    javax.swing.JOptionPane.showMessageDialog(this, "Pembayaran berhasil disimpan!");
-    
-} catch (java.sql.SQLException e) {
-    javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-}
+        try {
+        java.sql.Connection conn = DatabaseConnection.getKoneksi();
+        
+        // =========================================================================
+        // 1. AMBIL DATA DARI TABEL 'members'
+        // =========================================================================
+        // Menggunakan nama kolom yang sesuai dengan gambarmu: nama, email, berat, tinggi
+        String sqlCariMember = "SELECT nama, email, berat, tinggi, id_member "
+                             + "FROM members WHERE id_member = ?"; 
+                             
+        java.sql.PreparedStatement pstCari = conn.prepareStatement(sqlCariMember);
+        pstCari.setInt(1, FormLogin.idUserYangLogin); 
+        java.sql.ResultSet rs = pstCari.executeQuery();
+        
+        String namaDb = "";
+        String emailDb = "";
+        double beratDb = 0.0;
+        double tinggiDb = 0.0;
+        String idMemberDb = "";
+        
+        if (rs.next()) {
+            namaDb = rs.getString("nama"); 
+            emailDb = rs.getString("email");
+            beratDb = rs.getDouble("berat");
+            tinggiDb = rs.getDouble("tinggi");
+            // Ubah int dari database menjadi String untuk constructor MemberVIP
+            idMemberDb = String.valueOf(rs.getInt("id_member")); 
+        }
+        
+        // Buat objek MemberVIP dengan data asli dari database
+        models.MemberVIP member = new models.MemberVIP(namaDb, emailDb, beratDb, tinggiDb, idMemberDb);
+        
+        // =========================================================================
+        // 2. SIMPAN DATA KE TABEL 'pembayaran'
+        // =========================================================================
+        // Sesuai dengan kolom di tabel pembayaran: id_member, pilihan_kelas, metode_pembayaran
+        String sqlBayar = "INSERT INTO pembayaran (id_member, pilihan_kelas, metode_pembayaran) VALUES (?, ?, ?)";
+        java.sql.PreparedStatement pstBayar = conn.prepareStatement(sqlBayar);
+        
+        String kelas = this.namaKelas; 
+        String metode = cmbMetodeBayar.getSelectedItem().toString(); 
+        
+        pstBayar.setInt(1, FormLogin.idUserYangLogin); 
+        pstBayar.setString(2, kelas);
+        pstBayar.setString(3, metode);
+        
+        pstBayar.executeUpdate(); // Eksekusi simpan
+        
+        // =========================================================================
+        // 3. TAMPILKAN POP-UP HASIL OVERLOADING
+        // =========================================================================
+        // Panggil method bookingKelas, pesannya sekarang menggunakan nama asli dari DB
+        String pesanOverloading = member.bookingKelas(kelas); 
+        
+        String pesanAkhir = "Pembayaran berhasil disimpan!\n\n" + pesanOverloading;
+        javax.swing.JOptionPane.showMessageDialog(this, pesanAkhir);
+        
+    } catch (java.sql.SQLException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Error Database: " + e.getMessage());
+    }
     }//GEN-LAST:event_btnKonfirmasiActionPerformed
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked

@@ -24,12 +24,12 @@ public class MemberVIP extends Pengguna implements AktivitasMember {
     public String getMemberId() { return memberId; }
 
     //Overloading (Method dengan nama sama, parameter berbeda)
-    public void bookingKelas(String namaKelas) {
-        System.out.println(super.getNamaLengkap() + " membooking kelas " + namaKelas);
+    public String bookingKelas(String namaKelas) {
+        return super.getNamaLengkap() + " membooking kelas " + namaKelas;
     }
 
-    public void bookingKelas(String namaKelas, String jam) {
-        System.out.println(super.getNamaLengkap() + " membooking kelas " + namaKelas + " pada jam " + jam);
+    public String bookingKelas(String namaKelas, String jam) {
+        return super.getNamaLengkap() + " membooking kelas " + namaKelas + " pada jam " + jam;
     }
 
     //Overriding (Menimpa method dari interface)
